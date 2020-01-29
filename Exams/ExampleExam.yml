@@ -1,0 +1,82 @@
+Settings:
+    AllCorretCommand: ""
+    AllWrongCommand: ""
+    CorrectSound: "MOB_VILLAGER_YES"
+    WrongSound: "MOB_VILLAGER_NO"
+    CompleteTitle: "问卷完成"
+    CompleteSubTitle: "§d%record%分"
+Queries:
+    one:
+        question: "服务器的英文名字"
+        answers: 
+          - "ACFKT"
+          - "AKFCT"
+          - "ACKTK"
+        correctIndex: 1
+    two:
+        question: "居民区的玩法是怎么样的"
+        answers:
+          - "空岛式的建房子"
+          - "空岛式的分封领地的杀敌玩法"
+          - "空岛式的互相竞争的小镇玩法"
+        correctIndex: 2
+    three:
+        question: "服务器内用的是什么传送方式"
+        answers:
+          - "指令"
+          - "菜单传送"
+          - "npc和传送门"
+        correctIndex: 2
+    four:
+        question: "服务器的主要卖点是什么"
+        answers:
+          - "RPG玩法"
+          - "生存玩法"
+          - "红石"
+          - "小游戏"
+        correctIndex: 1
+    five:
+        question: "服务器的rpg采用的是什么类型"
+        answers:
+          - "完全开放式的跑图"
+          - "完全主线剧情的路线"
+          - "半开放性质的多支线"
+        correctIndex: 2
+    six:
+        question: "服务器的生存玩法是怎么样的"
+        answers:
+          - "和原版类似的挖矿砍树"
+          - "RPG与生存玩法相似"
+          - "生存和rpg交易流通"
+        correctIndex: 1
+    seven:
+        question: "服务器团体的最重要的两个部门"
+        answers:
+          - "插件部门和主机"
+          - "建筑队和QQ群"
+          - "美工与宣传"
+        correctIndex: 1
+    eight:
+        question: "服务器谁管事"
+        answers:
+          - "群主"
+          - "老王"
+          - "团队票决"
+          - "谁看到给谁管"
+        correctIndex: 3
+    nine:
+        question: "服务器做成这样为了什么"
+        answers:
+          - "想开成传奇霸业"
+          - "一时头脑发热"
+          - "想做一个令人开心的服务器"
+        correctIndex: 1
+    ten:
+        question: "说说你对服务器的评价"
+        answers:
+          - "非常喜欢"
+          - "凑热闹"
+          - "挺一般"
+          - "非常不喜欢"
+        correctIndex: 0
+    

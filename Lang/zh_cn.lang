@@ -1,0 +1,5 @@
+command_heading=§8-----§d§l答题系统§8--------
+command_description_help=§2查看帮助页面
+command_no_permission=§c权限不足
+command_subcmd_invalid=§c该指令不存在
+command_error_player_only=§2该指令只能玩家使用
