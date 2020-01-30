@@ -13,6 +13,7 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.plugin.PluginBase;
 
 public class Examination extends PluginBase implements Listener {
+
 	private CommandDispatcher commandDispatcher;
 	private Message message;
 	public static final String PREFIX = "[¡ìbExamination¡ìr]";
@@ -22,7 +23,7 @@ public class Examination extends PluginBase implements Listener {
 	@Override
 	public void onEnable() {
 		this.saveDefaultConfig();
-//		instance = this;
+		instance = this;
 
 		dataStorager = new FileStorager(this);
 		examManager = new ExamManager(this);
@@ -51,6 +52,12 @@ public class Examination extends PluginBase implements Listener {
 
 	public ExamManager getExamManager() {
 		return examManager;
+	}
+
+	private static Examination instance;
+
+	public static Examination getInstance() {
+		return instance;
 	}
 
 }

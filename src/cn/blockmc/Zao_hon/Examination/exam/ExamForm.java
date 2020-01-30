@@ -1,6 +1,8 @@
 package cn.blockmc.Zao_hon.Examination.exam;
 
 import java.math.BigDecimal;
+
+import cn.blockmc.Zao_hon.Examination.Examination;
 import cn.blockmc.Zao_hon.form.IFormWindow;
 import cn.blockmc.Zao_hon.form.element.IButton;
 import cn.blockmc.Zao_hon.form.event.IFormButtonClickedEvent;
@@ -10,30 +12,15 @@ import cn.nukkit.level.Sound;
 
 public class ExamForm {
 	private Exam exam;
-//	private Map<Integer, Query> queries;
-//	private Map<Integer, Integer> answers;
-//	private int size = 0;
 	private int index = 0;
 	private float record = 0f;
-//	private String title;
 	private boolean started = false;
 	private boolean allCorrect = true;
 	private boolean allWrong = true;
 
 	public ExamForm(Exam exam) {
 		this.exam = exam;
-//		this.title = exam.getName();
-//		this.size = exam.getQueries().size();
-//		this.queries = exam.getQueries();
-//		this.answers = new HashMap<Integer, Integer>(size);
 	}
-
-//	public ExamForm(final String title, final Map<Integer, Query> queries) {
-//		this.title = title;
-//		this.size = queries.size();
-//		this.queries = queries;
-//		this.answers = new HashMap<Integer, Integer>(size);
-//	}
 
 	public void open(Player player) {
 		if (!started) {
@@ -44,17 +31,6 @@ public class ExamForm {
 		form.open(player);
 	}
 
-//	public float caculateRecord() {
-//		int correctNumber = 0;
-//		for (Integer index : queries.keySet()) {
-//			if (queries.get(index).getCorrectIndex() == answers.get(index))
-//				correctNumber++;
-//		}
-//		float record = (float) correctNumber / size;
-//		BigDecimal bd = new BigDecimal(record);
-//		return bd.setScale(4, BigDecimal.ROUND_HALF_UP).floatValue() * 100;
-//	}
-
 	private void complete(Player player) {
 		BigDecimal bd = new BigDecimal(record);
 		float r = bd.setScale(4, BigDecimal.ROUND_HALF_UP).floatValue() * 100;
@@ -62,20 +38,28 @@ public class ExamForm {
 		ExamManager.getInstance().getPlayerExams().remove(player.getName());
 		player.sendMessage("考试结束,您的得分为§d" + record);
 
-		if (allCorrect && !exam.getSettings().getAllCorrectCommand().equals("")) {
-//			String cmd = exam.getSettings().getAllCorrectCommand();
-//			String[] args = cmd.split(" ");
-		}
+		if (allCorrect && !exam.getSettings().getAllCorrectCommand().equals(""))
+			dispatchCommand(player, exam.getSettings().getAllCorrectCommand());
 
-		if (allWrong && !exam.getSettings().getAllWrongCommand().equals("")) {
-//			String cmd = exam.getSettings().getAllCorrectCommand();
-//			String[] args = cmd.split(" ");
-		}
+		if (allWrong && !exam.getSettings().getAllWrongCommand().equals(""))
+			dispatchCommand(player, exam.getSettings().getAllWrongCommand());
 
 		player.sendTip("awocaotip");
-		player.sendTitle(exam.getSettings().getCompleteTitle(), exam.getSettings().getCompleteSubTitle());
+		player.sendTitle(exam.getSettings().getCompleteTitle().replace("{record}", record + ""),
+				exam.getSettings().getCompleteSubTitle().replace("{record}", record + ""));
 		player.sendPopup("popip");
 		player.sendTranslation("it is a translation");
+	}
+
+	private void dispatchCommand(Player player, String cmd) {
+		cmd = cmd.replace("{player}", player.getName());
+		if (cmd.startsWith("@")) {
+			cmd = cmd.substring(1);
+			Examination.getInstance().getServer()
+					.dispatchCommand(Examination.getInstance().getServer().getConsoleSender(), cmd);
+		} else {
+			Examination.getInstance().getServer().dispatchCommand(player, cmd);
+		}
 	}
 
 	private class QueryButtonListener implements ButtonListener {
@@ -102,7 +86,6 @@ public class ExamForm {
 				allWrong = false;
 
 			if (index >= exam.getQueries().size() - 1) {
-//				float record = caculateRecord();
 				complete(player);
 			} else {
 				QueryForm form = new QueryForm(exam.getQueries().get(++index));
