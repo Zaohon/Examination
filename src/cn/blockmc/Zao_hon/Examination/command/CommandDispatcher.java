@@ -4,15 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cn.blockmc.Zao_hon.Examination.lang.Message;
+import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
 
-public class CommandDispatcher {
-	private String rootCmdName;
+public class CommandDispatcher extends Command {
 	private Set<ICommand> commands = new HashSet<ICommand>();
 
 	public CommandDispatcher(final String rootCmdName) {
-		this.rootCmdName = rootCmdName;
+		super(rootCmdName);
 		this.addCommand(new HelpCommand());
 	}
 
@@ -20,6 +20,7 @@ public class CommandDispatcher {
 		commands.add(command);
 	}
 
+	@Override
 	public boolean execute(CommandSender sender, String cmd, String[] args) {
 		if (args.length == 0) {
 			displayUsage(sender, false, null);
@@ -110,7 +111,7 @@ public class CommandDispatcher {
 
 		@Override
 		public String[] getUsageString(CommandSender sender) {
-			return new String[] { "/" + rootCmdName + " help" };
+			return new String[] { "/" + CommandDispatcher.this.getName() + " help" };
 		}
 
 		@Override
@@ -133,7 +134,8 @@ public class CommandDispatcher {
 			if (args.length == 0) {
 				Message.senderSendMessage(sender, "command_heading");
 				for (ICommand command : commands) {
-					sender.sendMessage("/" + rootCmdName + " " + command.getName() + "  --" + command.getDescription());
+					sender.sendMessage("/" + CommandDispatcher.this.getName() + " " + command.getName() + "  --"
+							+ command.getDescription());
 				}
 			} else {
 				String subcmd = args[0];
