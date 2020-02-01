@@ -1,29 +1,33 @@
 package cn.blockmc.Zao_hon.Examination.command;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import cn.blockmc.Zao_hon.Examination.lang.Message;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
-import cn.nukkit.command.data.CommandParameter;
 
 public class CommandDispatcher extends Command {
-	private Set<ICommand> commands = new HashSet<ICommand>();
+	/**
+	 * 所有子指令
+	 */
+	private Set<ICommand> commands = new LinkedHashSet<ICommand>();
 
 	public CommandDispatcher(final String rootCmdName) {
-		super(rootCmdName);
-		this.addCommand(new HelpCommand());
+		this(rootCmdName, "", new String[] {});
 	}
 
-	public void loadParameters() {
-		this.commandParameters.clear();
-		Set<String> sCommands = new HashSet<String>();
-		commands.forEach(command -> sCommands.add(command.getName()));
-		this.commandParameters.put("default", new CommandParameter[] {
-				new CommandParameter("skin", false, sCommands.toArray(new String[commands.size()])) });
+	public CommandDispatcher(final String rootCmdName, final String rootDescription, final String[] aliases) {
+		super(rootCmdName);
+		this.setDescription(rootDescription);
+		this.setAliases(aliases);
+		this.addCommand(new HelpCommand());
 	}
+	/**
+	 * 添加子指令
+	 * @param command
+	 */
 
 	public void addCommand(ICommand command) {
 		commands.add(command);
@@ -87,15 +91,13 @@ public class CommandDispatcher extends Command {
 		return null;
 	}
 
-	public void displayUsage(CommandSender sender, ICommand cmd) {
+	private void displayUsage(CommandSender sender, ICommand cmd) {
 		Message.senderSendMessage(sender, Message.getString("command_heading"));
 		if (cmd == null) {
-
 			for (ICommand command : commands) {
 				sender.sendMessage("/" + CommandDispatcher.this.getName() + " " + command.getName() + "  --"
 						+ command.getDescription());
 			}
-
 		} else {
 			for (String str : cmd.getUsageString(sender)) {
 				sender.sendMessage(str);
