@@ -32,7 +32,7 @@ public class CommandDispatcher extends Command {
 	@Override
 	public boolean execute(CommandSender sender, String cmd, String[] args) {
 		if (args.length == 0) {
-			displayUsage(sender, false, null);
+			displayUsage(sender, null);
 			return true;
 		}
 
@@ -41,7 +41,7 @@ public class CommandDispatcher extends Command {
 		subCommand = subCommand == null ? findCommandByAliases(subcmd) : subCommand;
 
 		if (subCommand == null) {
-			displayUsage(sender, true, null);
+			Message.senderSendMessage(sender, Message.getString("command_subcmd_invalid"));
 			return true;
 		}
 
@@ -61,7 +61,7 @@ public class CommandDispatcher extends Command {
 		}
 
 		if (!subCommand.onCommand(sender, subArgs)) {
-			displayUsage(sender, false, subCommand);
+			displayUsage(sender, subCommand);
 		}
 		return true;
 	}
@@ -87,13 +87,15 @@ public class CommandDispatcher extends Command {
 		return null;
 	}
 
-	public void displayUsage(CommandSender sender, boolean para, ICommand cmd) {
+	public void displayUsage(CommandSender sender, ICommand cmd) {
+		Message.senderSendMessage(sender, Message.getString("command_heading"));
 		if (cmd == null) {
-			String text = "可用参数:";
+
 			for (ICommand command : commands) {
-				text = text + command.getName() + " ";
+				sender.sendMessage("/" + CommandDispatcher.this.getName() + " " + command.getName() + "  --"
+						+ command.getDescription());
 			}
-			sender.sendMessage(text);
+
 		} else {
 			for (String str : cmd.getUsageString(sender)) {
 				sender.sendMessage(str);
@@ -141,11 +143,7 @@ public class CommandDispatcher extends Command {
 		@Override
 		public boolean onCommand(CommandSender sender, String[] args) {
 			if (args.length == 0) {
-				Message.senderSendMessage(sender, "command_heading");
-				for (ICommand command : commands) {
-					sender.sendMessage("/" + CommandDispatcher.this.getName() + " " + command.getName() + "  --"
-							+ command.getDescription());
-				}
+				displayUsage(sender, null);
 			} else {
 				String subcmd = args[0];
 				ICommand subCommand = findCommand(subcmd);
@@ -153,10 +151,7 @@ public class CommandDispatcher extends Command {
 				if (subCommand == null) {
 					Message.senderSendMessage(sender, Message.getString("command_subcmd_invalid"));
 				} else {
-					Message.senderSendMessage(sender, Message.getString("command_heading"));
-					for (String str : subCommand.getUsageString(sender)) {
-						sender.sendMessage(str);
-					}
+					displayUsage(sender, subCommand);
 				}
 			}
 			return true;
