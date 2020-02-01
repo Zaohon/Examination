@@ -7,6 +7,7 @@ import cn.blockmc.Zao_hon.Examination.lang.Message;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
+import cn.nukkit.command.data.CommandParameter;
 
 public class CommandDispatcher extends Command {
 	private Set<ICommand> commands = new HashSet<ICommand>();
@@ -14,6 +15,14 @@ public class CommandDispatcher extends Command {
 	public CommandDispatcher(final String rootCmdName) {
 		super(rootCmdName);
 		this.addCommand(new HelpCommand());
+	}
+
+	public void loadParameters() {
+		this.commandParameters.clear();
+		Set<String> sCommands = new HashSet<String>();
+		commands.forEach(command -> sCommands.add(command.getName()));
+		this.commandParameters.put("default", new CommandParameter[] {
+				new CommandParameter("skin", false, sCommands.toArray(new String[commands.size()])) });
 	}
 
 	public void addCommand(ICommand command) {

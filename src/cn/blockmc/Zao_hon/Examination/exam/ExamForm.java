@@ -36,7 +36,7 @@ public class ExamForm {
 		float r = bd.setScale(4, BigDecimal.ROUND_HALF_UP).floatValue() * 100;
 		ExamManager.getInstance().setPlayerRecord(player.getName(), exam.getName(), r);
 		ExamManager.getInstance().getPlayerExams().remove(player.getName());
-		player.sendMessage("考试结束,您的得分为§d" + record);
+		player.sendMessage("考试结束,您的得分为§d" + r);
 
 		if (allCorrect && !exam.getSettings().getAllCorrectCommand().equals(""))
 			dispatchCommand(player, exam.getSettings().getAllCorrectCommand());
@@ -47,7 +47,7 @@ public class ExamForm {
 		player.sendTip("awocaotip");
 		player.sendTitle(exam.getSettings().getCompleteTitle().replace("{record}", record + ""),
 				exam.getSettings().getCompleteSubTitle().replace("{record}", record + ""));
-		player.sendPopup("popip");
+		player.sendPopup("popip","popsss");
 		player.sendTranslation("it is a translation");
 	}
 
